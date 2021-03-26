@@ -16,3 +16,6 @@ JavaAssignment
 "toAmount":""
 }
 9- send the request
+
+Note:
+I have used Sonar Lint plugin whic h doesn;t provide HTML report but i included the report as .jpg
