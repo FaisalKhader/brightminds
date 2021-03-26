@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>BmJavaTestApplicationTests.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">BmJavaTestApplicationTests (Mar 26, 2021 9:41:31 PM)</a> &gt; <a href="../../index.html" class="el_group">bmJavaTest</a> &gt; <a href="../index.html" class="el_bundle">src/test/java</a> &gt; <a href="index.source.html" class="el_package">com.brightminds.assignment</a> &gt; <span class="el_source">BmJavaTestApplicationTests.java</span></div><h1>BmJavaTestApplicationTests.java</h1><pre class="source lang-java linenums">package com.brightminds.assignment;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+
+import java.util.List;
+
+import org.apache.catalina.connector.Response;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import com.brightminds.assignment.controller.StatmentController;
+import com.brightminds.assignment.model.Statement;
+import com.brightminds.assignment.model.StatementDto;
+import com.brightminds.assignment.service.StatementService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@RunWith(SpringRunner.class)
+@WebMvcTest(StatmentController.class)
+<span class="fc" id="L29">class BmJavaTestApplicationTests {</span>
+
+	
+	@Autowired
+	MockMvc mvc;
+	
+	@Autowired
+	ObjectMapper objectMapper;
+	
+	@MockBean
+	StatementService statementSrv;
+
+
+	@Test
+	void t1_testFindByAccountId() {
+<span class="fc" id="L44">		List&lt;Statement&gt; statements = statementSrv.findByAccountId(1L);</span>
+<span class="fc" id="L45">		 assertThat(statements).isNotNull();</span>
+<span class="fc" id="L46">	}</span>
+	
+	@Test
+	 void t1_testFindByAccountIdAndDate() {
+		
+<span class="fc" id="L51">		StatementDto requestData = new StatementDto();</span>
+<span class="fc" id="L52">		requestData.setFromDate(&quot;01.01.2020&quot;);</span>
+<span class="fc" id="L53">		requestData.setToDate(&quot;01.06.2020&quot;);</span>
+<span class="fc" id="L54">		List&lt;Statement&gt; statements = statementSrv.findByAccountIdAndStatmentDate(1L, requestData);</span>
+<span class="fc" id="L55">		 assertThat(statements).isNotNull();</span>
+<span class="fc" id="L56">	}</span>
+
+	@Test
+	void t1_testFindByAccountIdAndAmount() {
+		
+<span class="fc" id="L61">		StatementDto requestData = new StatementDto();</span>
+<span class="fc" id="L62">		requestData.setFromAmount(&quot;300&quot;);</span>
+<span class="fc" id="L63">		requestData.setToAmount(&quot;1000&quot;);</span>
+<span class="fc" id="L64">		List&lt;Statement&gt; statements = statementSrv.findByAccountIdAndAmount(1L, requestData);</span>
+<span class="fc" id="L65">		 assertThat(statements).isNotNull();</span>
+<span class="fc" id="L66">	}</span>
+
+	@Test
+	 void t1_testFindByAccountIdAndDateAndAmount() {
+		
+<span class="fc" id="L71">		StatementDto requestData = new StatementDto();</span>
+<span class="fc" id="L72">		requestData.setFromDate(&quot;01.01.2020&quot;);</span>
+<span class="fc" id="L73">		requestData.setToDate(&quot;01.06.2020&quot;);</span>
+<span class="fc" id="L74">		requestData.setFromAmount(&quot;300&quot;);</span>
+<span class="fc" id="L75">		requestData.setToAmount(&quot;1000&quot;);</span>
+<span class="fc" id="L76">		List&lt;Statement&gt; statements = statementSrv.findByAccountIdAndStatmentDateAndAmount(1L, requestData);</span>
+<span class="fc" id="L77">		 assertThat(statements).isNotNull();</span>
+<span class="fc" id="L78">	}</span>
+
+	@Test
+	void adminFindByAccountId() throws  Exception {
+		
+<span class="fc" id="L83">		StatementDto requestData = new StatementDto();</span>
+<span class="fc" id="L84">		requestData.setFromDate(&quot;&quot;);</span>
+<span class="fc" id="L85">		requestData.setToDate(&quot;&quot;);</span>
+<span class="fc" id="L86">		requestData.setFromAmount(&quot;&quot;);</span>
+<span class="fc" id="L87">		requestData.setToAmount(&quot;&quot;);</span>
+											   
+<span class="fc" id="L89">		  mvc.perform( MockMvcRequestBuilders</span>
+<span class="fc" id="L90">			      .get(&quot;/statement/account/{accountId}&quot;,1L)</span>
+<span class="fc" id="L91">			      .with(httpBasic(&quot;admin&quot;,&quot;admin&quot;))</span>
+<span class="fc" id="L92">			      .content(objectMapper.writeValueAsString(requestData))</span>
+<span class="fc" id="L93">			      .contentType(MediaType.APPLICATION_JSON)</span>
+<span class="fc" id="L94">			      .accept(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L95">		  		  .andDo(print())</span>
+<span class="fc" id="L96">			      .andExpect(status().isOk());</span>
+<span class="fc" id="L97">	}</span>
+
+	@Test
+	void adminFindByAccountIdWthDates() throws  Exception {
+		
+<span class="fc" id="L102">		StatementDto requestData = new StatementDto();</span>
+<span class="fc" id="L103">		requestData.setFromDate(&quot;01.01.2020&quot;);</span>
+<span class="fc" id="L104">		requestData.setToDate(&quot;01.06.2020&quot;);</span>
+<span class="fc" id="L105">		requestData.setFromAmount(&quot;&quot;);</span>
+<span class="fc" id="L106">		requestData.setToAmount(&quot;&quot;);</span>
+											   
+<span class="fc" id="L108">		  mvc.perform( MockMvcRequestBuilders</span>
+<span class="fc" id="L109">			      .get(&quot;/statement/account/{accountId}&quot;,1L)</span>
+<span class="fc" id="L110">			      .with(httpBasic(&quot;admin&quot;,&quot;admin&quot;))</span>
+<span class="fc" id="L111">			      .content(objectMapper.writeValueAsString(requestData))</span>
+<span class="fc" id="L112">			      .contentType(MediaType.APPLICATION_JSON)</span>
+<span class="fc" id="L113">			      .accept(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L114">		  		  .andDo(print())</span>
+<span class="fc" id="L115">			      .andExpect(status().isOk());</span>
+<span class="fc" id="L116">	}</span>
+
+	@Test
+	void adminFindByAccountIdWthDatesAndAmount() throws  Exception {
+		
+<span class="fc" id="L121">		StatementDto requestData = new StatementDto();</span>
+<span class="fc" id="L122">		requestData.setFromDate(&quot;01.01.2020&quot;);</span>
+<span class="fc" id="L123">		requestData.setToDate(&quot;01.06.2020&quot;);</span>
+<span class="fc" id="L124">		requestData.setFromAmount(&quot;500&quot;);</span>
+<span class="fc" id="L125">		requestData.setToAmount(&quot;1000&quot;);</span>
+											   
+<span class="fc" id="L127">		  mvc.perform( MockMvcRequestBuilders</span>
+<span class="fc" id="L128">			      .get(&quot;/statement/account/{accountId}&quot;,1L)</span>
+<span class="fc" id="L129">			      .with(httpBasic(&quot;admin&quot;,&quot;admin&quot;))</span>
+<span class="fc" id="L130">			      .content(objectMapper.writeValueAsString(requestData))</span>
+<span class="fc" id="L131">			      .contentType(MediaType.APPLICATION_JSON)</span>
+<span class="fc" id="L132">			      .accept(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L133">		  		  .andDo(print())</span>
+<span class="fc" id="L134">			      .andExpect(status().isOk());</span>
+<span class="fc" id="L135">	}</span>
+
+	@Test
+	void adminFindByAccountIdWthAmount() throws  Exception {
+		
+<span class="fc" id="L140">		StatementDto requestData = new StatementDto();</span>
+<span class="fc" id="L141">		requestData.setFromDate(&quot;&quot;);</span>
+<span class="fc" id="L142">		requestData.setToDate(&quot;&quot;);</span>
+<span class="fc" id="L143">		requestData.setFromAmount(&quot;500&quot;);</span>
+<span class="fc" id="L144">		requestData.setToAmount(&quot;1000&quot;);</span>
+											   
+<span class="fc" id="L146">		  mvc.perform( MockMvcRequestBuilders</span>
+<span class="fc" id="L147">			      .get(&quot;/statement/account/{accountId}&quot;,1L)</span>
+<span class="fc" id="L148">			      .with(httpBasic(&quot;admin&quot;,&quot;admin&quot;))</span>
+<span class="fc" id="L149">			      .content(objectMapper.writeValueAsString(requestData))</span>
+<span class="fc" id="L150">			      .contentType(MediaType.APPLICATION_JSON)</span>
+<span class="fc" id="L151">			      .accept(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L152">		  		  .andDo(print())</span>
+<span class="fc" id="L153">			      .andExpect(status().isOk());</span>
+<span class="fc" id="L154">	}</span>
+
+	@Test
+	void adminFindByAccountIdWthMissingDate() throws  Exception {
+		
+<span class="fc" id="L159">		StatementDto requestData = new StatementDto();</span>
+<span class="fc" id="L160">		requestData.setFromDate(&quot;01.01.2020&quot;);</span>
+<span class="fc" id="L161">		requestData.setToDate(&quot;&quot;);</span>
+<span class="fc" id="L162">		requestData.setFromAmount(&quot;&quot;);</span>
+<span class="fc" id="L163">		requestData.setToAmount(&quot;&quot;);</span>
+											   
+<span class="fc" id="L165">		  mvc.perform( MockMvcRequestBuilders</span>
+<span class="fc" id="L166">			      .get(&quot;/statement/account/{accountId}&quot;,1L)</span>
+<span class="fc" id="L167">			      .with(httpBasic(&quot;admin&quot;,&quot;admin&quot;))</span>
+<span class="fc" id="L168">			      .content(objectMapper.writeValueAsString(requestData))</span>
+<span class="fc" id="L169">			      .contentType(MediaType.APPLICATION_JSON)</span>
+<span class="fc" id="L170">			      .accept(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L171">		  		  .andDo(print())</span>
+<span class="fc" id="L172">			      .andExpect(status().isBadRequest());</span>
+<span class="fc" id="L173">	}</span>
+
+	@Test
+	void adminFindByAccountIdWthMissingAmount() throws  Exception {
+		
+<span class="fc" id="L178">		StatementDto requestData = new StatementDto();</span>
+<span class="fc" id="L179">		requestData.setFromDate(&quot;&quot;);</span>
+<span class="fc" id="L180">		requestData.setToDate(&quot;&quot;);</span>
+<span class="fc" id="L181">		requestData.setFromAmount(&quot;1000&quot;);</span>
+<span class="fc" id="L182">		requestData.setToAmount(&quot;&quot;);</span>
+											   
+<span class="fc" id="L184">		  mvc.perform( MockMvcRequestBuilders</span>
+<span class="fc" id="L185">			      .get(&quot;/statement/account/{accountId}&quot;,1L)</span>
+<span class="fc" id="L186">			      .with(httpBasic(&quot;admin&quot;,&quot;admin&quot;))</span>
+<span class="fc" id="L187">			      .content(objectMapper.writeValueAsString(requestData))</span>
+<span class="fc" id="L188">			      .contentType(MediaType.APPLICATION_JSON)</span>
+<span class="fc" id="L189">			      .accept(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L190">		  		  .andDo(print())</span>
+<span class="fc" id="L191">			      .andExpect(status().isBadRequest());</span>
+<span class="fc" id="L192">	}</span>
+
+	@Test
+	void adminFindByAccountIdWthWrongDateParam() throws  Exception {
+		
+<span class="fc" id="L197">		StatementDto requestData = new StatementDto();</span>
+<span class="fc" id="L198">		requestData.setFromDate(&quot;01.s01.2020s&quot;);</span>
+<span class="fc" id="L199">		requestData.setToDate(&quot;01.05.2020&quot;);</span>
+<span class="fc" id="L200">		requestData.setFromAmount(&quot;&quot;);</span>
+<span class="fc" id="L201">		requestData.setToAmount(&quot;&quot;);</span>
+											   
+<span class="fc" id="L203">		  mvc.perform( MockMvcRequestBuilders</span>
+<span class="fc" id="L204">			      .get(&quot;/statement/account/{accountId}&quot;,1L)</span>
+<span class="fc" id="L205">			      .with(httpBasic(&quot;admin&quot;,&quot;admin&quot;))</span>
+<span class="fc" id="L206">			      .content(objectMapper.writeValueAsString(requestData))</span>
+<span class="fc" id="L207">			      .contentType(MediaType.APPLICATION_JSON)</span>
+<span class="fc" id="L208">			      .accept(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L209">		  		  .andDo(print())</span>
+<span class="fc" id="L210">			      .andExpect(status().isBadRequest());</span>
+<span class="fc" id="L211">	}</span>
+
+	@Test
+	void adminFindByAccountIdWthWrongAmountParam() throws  Exception {
+		
+<span class="fc" id="L216">		StatementDto requestData = new StatementDto();</span>
+<span class="fc" id="L217">		requestData.setFromDate(&quot;&quot;);</span>
+<span class="fc" id="L218">		requestData.setToDate(&quot;&quot;);</span>
+<span class="fc" id="L219">		requestData.setFromAmount(&quot;s100s&quot;);</span>
+<span class="fc" id="L220">		requestData.setToAmount(&quot;500&quot;);</span>
+											   
+<span class="fc" id="L222">		  mvc.perform( MockMvcRequestBuilders</span>
+<span class="fc" id="L223">			      .get(&quot;/statement/account/{accountId}&quot;,1L)</span>
+<span class="fc" id="L224">			      .with(httpBasic(&quot;admin&quot;,&quot;admin&quot;))</span>
+<span class="fc" id="L225">			      .content(objectMapper.writeValueAsString(requestData))</span>
+<span class="fc" id="L226">			      .contentType(MediaType.APPLICATION_JSON)</span>
+<span class="fc" id="L227">			      .accept(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L228">		  		  .andDo(print())</span>
+<span class="fc" id="L229">			      .andExpect(status().isBadRequest());</span>
+<span class="fc" id="L230">	}</span>
+
+	
+	@Test
+	void userFindByAccountId() throws  Exception {
+		
+<span class="fc" id="L236">		StatementDto requestData = new StatementDto();</span>
+<span class="fc" id="L237">		requestData.setFromDate(&quot;&quot;);</span>
+<span class="fc" id="L238">		requestData.setToDate(&quot;&quot;);</span>
+<span class="fc" id="L239">		requestData.setFromAmount(&quot;&quot;);</span>
+<span class="fc" id="L240">		requestData.setToAmount(&quot;&quot;);</span>
+											   
+<span class="fc" id="L242">		  mvc.perform( MockMvcRequestBuilders</span>
+<span class="fc" id="L243">			      .get(&quot;/statement/account/{accountId}&quot;,1L)</span>
+<span class="fc" id="L244">			      .with(httpBasic(&quot;user&quot;,&quot;user&quot;))</span>
+<span class="fc" id="L245">			      .content(objectMapper.writeValueAsString(requestData))</span>
+<span class="fc" id="L246">			      .contentType(MediaType.APPLICATION_JSON)</span>
+<span class="fc" id="L247">			      .accept(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L248">		  		  .andDo(print())</span>
+<span class="fc" id="L249">			      .andExpect(status().isOk());</span>
+<span class="fc" id="L250">	}</span>
+
+	@Test
+	void userFindByAccountIdAndFilters() throws  Exception {
+		
+<span class="fc" id="L255">		StatementDto requestData = new StatementDto();</span>
+<span class="fc" id="L256">		requestData.setFromDate(&quot;01.01.2020&quot;);</span>
+<span class="fc" id="L257">		requestData.setToDate(&quot;01.06.2020&quot;);</span>
+<span class="fc" id="L258">		requestData.setFromAmount(&quot;&quot;);</span>
+<span class="fc" id="L259">		requestData.setToAmount(&quot;&quot;);</span>
+											   
+<span class="fc" id="L261">		  mvc.perform( MockMvcRequestBuilders</span>
+<span class="fc" id="L262">			      .get(&quot;/statement/account/{accountId}&quot;,1L)</span>
+<span class="fc" id="L263">			      .with(httpBasic(&quot;user&quot;,&quot;user&quot;))</span>
+<span class="fc" id="L264">			      .content(objectMapper.writeValueAsString(requestData))</span>
+<span class="fc" id="L265">			      .contentType(MediaType.APPLICATION_JSON)</span>
+<span class="fc" id="L266">			      .accept(MediaType.APPLICATION_JSON))</span>
+<span class="fc" id="L267">		  		  .andDo(print())</span>
+<span class="fc" id="L268">			      .andExpect(status().isUnauthorized());</span>
+<span class="fc" id="L269">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>BmJavaTestApplicationTests (Mar 26, 2021 9:41:31 PM)</div></body></html>
