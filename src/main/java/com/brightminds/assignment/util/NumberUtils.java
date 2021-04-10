@@ -7,7 +7,7 @@ public class NumberUtils {
 	private NumberUtils() {
 		throw new  IllegalStateException("Utility class");
 
-	}
+	} 
 	
 	public static Double getStringAsDouble(String number) {
 		
