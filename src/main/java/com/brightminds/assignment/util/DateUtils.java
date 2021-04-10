@@ -10,7 +10,7 @@ public class DateUtils {
 
 	public static final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("d.MM.yyyy");
 	
-	
+	 
 	private DateUtils() {
 		throw new IllegalStateException("Utility class");
  
