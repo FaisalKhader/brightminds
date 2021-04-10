@@ -14,7 +14,7 @@ public class DateUtils {
 	private DateUtils() {
 		throw new IllegalStateException("Utility class");
   
-	} 
+	}
 	
 	public static LocalDate getStringAsDate(String date) throws BusinessException{
 		
